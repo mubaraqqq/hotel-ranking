@@ -9,7 +9,14 @@ import MenuItem from "@mui/material/MenuItem";
 import { useState, MouseEvent } from "react";
 import Logo from "./Logo";
 import { APP_NAME, navLinks } from "../constants/constants";
-import { Divider, Drawer } from "@mui/material";
+import {
+  Divider,
+  Drawer,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
@@ -87,13 +94,16 @@ const NavBar = () => {
                 </Box>
                 <Divider />
                 {navLinks.map((link) => (
-                  <MenuItem key={link.text} onClick={handleCloseNavMenu}>
-                    <StyledLink to={link.link}>
-                      <Typography color="black" textAlign="center">
-                        {link.text}
-                      </Typography>
-                    </StyledLink>
-                  </MenuItem>
+                  <ListItem
+                    key={link.text}
+                    onClick={handleCloseNavMenu}
+                    disablePadding
+                  >
+                    <ListItemButton component={Link} to={link.link}>
+                      <ListItemIcon>{link.icon}</ListItemIcon>
+                      <ListItemText primary={link.text} />
+                    </ListItemButton>
+                  </ListItem>
                 ))}
               </Box>
             </Drawer>
