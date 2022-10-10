@@ -5,7 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import MenuItem from "@mui/material/MenuItem";
 import { useState, MouseEvent } from "react";
 import Logo from "./Logo";
 import { APP_NAME, navLinks } from "../constants/constants";
