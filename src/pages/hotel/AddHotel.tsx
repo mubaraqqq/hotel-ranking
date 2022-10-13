@@ -41,6 +41,7 @@ const hotelFormInitialValues = {
   city: "",
   country: "",
   address: "",
+  latlng: mapCenter,
   hotelChain: "",
 };
 
@@ -62,6 +63,7 @@ const AddHotel = () => {
             city: hotel.city,
             country: hotel.country,
             address: hotel.address,
+            latlng: hotel.latlng,
             hotelChain: hotel.hotelChain,
           });
         if (status === "success") alert(successMessage);
@@ -84,8 +86,8 @@ const AddHotel = () => {
     const map = useMapEvents({
       click: (e: LeafletMouseEvent) => {
         map.locate();
-        console.log(e.latlng);
         setMapLocation(e.latlng);
+        setHotel({ ...hotel, latlng: e.latlng });
       },
     });
     return null;

@@ -1,3 +1,5 @@
+import { LatLngExpression } from "leaflet";
+
 // Promise Types
 export type IQueryStatus = "success" | "error";
 
@@ -26,6 +28,7 @@ export interface IHotelDocument {
   city: string;
   country: string;
   address: string;
+  latlng: LatLngExpression;
   hotelId: string;
   hotelChain: string;
 }
