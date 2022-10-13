@@ -20,13 +20,14 @@ import {
 } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import { HotelChainRepo, HotelRepo } from "../../repositories/hotel-repository";
-import { LatLngExpression, LeafletMouseEvent } from "leaflet";
+import { LatLngLiteral, LeafletMouseEvent } from "leaflet";
 import L from "leaflet";
 
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import { IHotelChainDoc, IHotelInput } from "../../types/types";
 import { generateUUID } from "../../utils";
+import axios from "axios";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -35,7 +36,8 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const mapCenter: LatLngExpression = [6.457171, 3.327709];
+const mapCenter: LatLngLiteral = { lat: 6.457171, lng: 3.327709 };
+// [6.457171, 3.327709];
 const hotelFormInitialValues = {
   name: "",
   city: "",
@@ -50,8 +52,10 @@ const AddHotel = () => {
   const [loading, setLoading] = useState(false);
   const [hotel, setHotel] = useState<IHotelInput>(hotelFormInitialValues);
   const [hotelChains, setHotelChains] = useState<IHotelChainDoc[]>([]);
-  const [mapLocation, setMapLocation] = useState<LatLngExpression>(mapCenter);
+  const [mapLocation, setMapLocation] = useState<LatLngLiteral>(mapCenter);
+  const [geocodedAddress, setGeocodedAddress] = useState<string>();
 
+  // Submit form function
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     try {
@@ -82,6 +86,7 @@ const AddHotel = () => {
     }
   }
 
+  // Leaflet Map Child Component and Events
   function MapFunction() {
     const map = useMapEvents({
       click: (e: LeafletMouseEvent) => {
@@ -105,12 +110,43 @@ const AddHotel = () => {
         if (docList) {
           setHotelChains(docList);
         }
-        console.log(docList);
       } catch (e) {
         console.log(e);
       }
     })();
   }, []);
+
+  // Get street address from map longitude and latitude coordinates using API
+  useEffect(() => {
+    // API options
+    const options = {
+      method: "GET",
+      url: "https://forward-reverse-geocoding.p.rapidapi.com/v1/reverse",
+      params: {
+        lat: mapLocation.lat,
+        lon: mapLocation.lng,
+        "accept-language": "en",
+        polygon_threshold: "0.0",
+      },
+      headers: {
+        "X-RapidAPI-Key": process.env.REACT_APP_GEOCODING_API_KEY,
+        "X-RapidAPI-Host": "forward-reverse-geocoding.p.rapidapi.com",
+      },
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        // Set hotel address to geocoding response from API
+        setHotel((hotel) => ({
+          ...hotel,
+          address: response.data.display_name,
+        }));
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }, [mapLocation]);
 
   return (
     <Stack
@@ -162,12 +198,18 @@ const AddHotel = () => {
                 onChange={handleHotelChainChange}
               >
                 {hotelChains.map((chain) => (
-                  <MenuItem key={generateUUID()} value={chain.name}>
+                  <MenuItem key={generateUUID()} value={chain.chainId}>
                     {chain.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
+            <TextField
+              label="Address"
+              value={hotel.address}
+              required
+              fullWidth
+            />
 
             <Typography>Select Hotel Location on Map</Typography>
             <div style={{ height: "500px", width: "100%" }}>
