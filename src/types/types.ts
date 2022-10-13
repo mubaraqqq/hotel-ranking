@@ -27,7 +27,7 @@ export interface IHotelDocument {
   country: string;
   address: string;
   hotelId: string;
-  hotelChain?: string;
+  hotelChain: string;
 }
 
 export interface IHotelInput extends Omit<IHotelDocument, "hotelId"> {}
