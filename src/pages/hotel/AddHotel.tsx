@@ -55,6 +55,11 @@ const AddHotel = () => {
   const [mapLocation, setMapLocation] = useState<LatLngLiteral>(mapCenter);
   const [geocodedAddress, setGeocodedAddress] = useState<string>();
 
+  const noHotelChains = hotelChains.length === 0;
+  const hotelChainSelectLabel = noHotelChains
+    ? "No Hotel Chains Added Yet"
+    : "Hotel Chain";
+
   // Submit form function
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -188,13 +193,15 @@ const AddHotel = () => {
               required
               fullWidth
             />
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Hotel Chain</InputLabel>
+            <FormControl fullWidth disabled={noHotelChains}>
+              <InputLabel id="demo-simple-select-label">
+                {hotelChainSelectLabel}
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={hotel.hotelChain}
-                label="Age"
+                label={hotelChainSelectLabel}
                 onChange={handleHotelChainChange}
               >
                 {hotelChains.map((chain) => (
