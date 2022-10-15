@@ -169,7 +169,7 @@ const HotelForm = ({ hotelToEdit }: HotelFormProps) => {
         polygon_threshold: "0.0",
       },
       headers: {
-        "X-RapidAPI-Key": process.env.REACT_APP_GEOCODING_API_KEY,
+        "X-RapidAPI-Key": "a2a93b20a9mshd63fdbc1d1e4213p1b6f20jsn0f1693ce22e0",
         "X-RapidAPI-Host": "forward-reverse-geocoding.p.rapidapi.com",
       },
     };
