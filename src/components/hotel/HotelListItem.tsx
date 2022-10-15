@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Edit, Delete } from "@mui/icons-material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -7,10 +8,15 @@ import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HotelChainRepo } from "../../repositories/hotel-repository";
-import { EDIT_HOTEL } from "../../routes/route";
+import { EDIT_HOTEL, HOTEL } from "../../routes/route";
 import { IHotelDocument } from "../../types/types";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+
+const HotelLink = styled(Link)`
+  text-decoration: none;
+`;
 
 type Props = {
   hotel: IHotelDocument;
@@ -33,25 +39,48 @@ const HotelListItem = ({ hotel, deleteFn }: Props) => {
   }, [hotel.hotelChain]);
 
   return (
-    <Card sx={{ width: "95%", height: "80px", mx: "auto" }}>
+    <Card sx={{ width: "95%", height: "90px", mx: "auto" }}>
       <CardContent>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Stack direction="column">
-            <Typography fontWeight="700" sx={{ wordWrap: "break-word" }}>
+          <Stack
+            direction="column"
+            component={HotelLink}
+            to={`/${HOTEL}/${hotel.hotelId}`}
+          >
+            <Typography
+              fontWeight="700"
+              color="black"
+              sx={{ wordWrap: "break-word" }}
+            >
               {hotel.name}
             </Typography>
-            <Typography variant="caption" textTransform="capitalize">
+            <Typography
+              variant="caption"
+              color="black"
+              textTransform="capitalize"
+            >
               {hotel.city}, {hotel.country}
             </Typography>
+
+            <HotelLink to={`/${HOTEL}/${hotel.hotelId}`}>
+              <Typography
+                color="black"
+                variant="caption"
+                fontSize={{ xs: "10px" }}
+                sx={{ textDecoration: "underline" }}
+              >
+                View Hotel <ExitToApp sx={{ fontSize: "11px" }} />
+              </Typography>
+            </HotelLink>
           </Stack>
           <Chip
             label={
               <Typography
-                fontSize={{ xs: "8px", sm: "15px" }}
+                fontSize={{ xs: "12px", sm: "15px" }}
                 variant="caption"
               >
                 {hotelChainName}

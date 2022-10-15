@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HotelChainRepo } from "../../repositories/hotel-repository";
+import { HOTEL_CHAINS } from "../../routes/route";
 import { IHotelChainDoc } from "../../types/types";
 
 type HotelChainFormProps = {
@@ -27,8 +28,6 @@ const HotelChainForm = ({ hotelChainToEdit }: HotelChainFormProps) => {
   const [hotelChain, setHotelChain] = useState(
     isEditForm ? hotelChainToEdit : hotelChainFormInitalValues
   );
-
-  console.log(hotelChain, hotelChainToEdit, isEditForm);
 
   const navigate = useNavigate();
 
@@ -63,7 +62,7 @@ const HotelChainForm = ({ hotelChainToEdit }: HotelChainFormProps) => {
         setLoading(false);
         setHotelChain(hotelChainFormInitalValues);
         setTimeout(() => {
-          navigate("/");
+          navigate(`/${HOTEL_CHAINS}`);
         }, 1000);
       }, 1500);
     }
