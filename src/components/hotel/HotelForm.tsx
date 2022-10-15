@@ -37,7 +37,7 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const initialCenter: LatLngLiteral = { lat: 6.457171, lng: 3.327709 };
-// [6.457171, 3.327709];
+
 const hotelFormInitialValues = {
   name: "",
   city: "",
