@@ -173,7 +173,6 @@ const HotelForm = ({ hotelToEdit }: HotelFormProps) => {
         "X-RapidAPI-Host": "forward-reverse-geocoding.p.rapidapi.com",
       },
     };
-
     setIsAddressLoading(true);
     axios
       .request(options)
@@ -190,6 +189,13 @@ const HotelForm = ({ hotelToEdit }: HotelFormProps) => {
       .finally(() => {
         setIsAddressLoading(false);
       });
+    // setIsAddressLoading(true);
+    // (async () => {
+    //   const url = `/.netlify/functions/netlify-api?lat=${mapLocation.lat}&lon=${mapLocation.lng}`;
+    //   const res = await fetch(url);
+    //   // const data = await res.body;
+    //   console.log(res);
+    // })();
   }, [mapLocation]);
 
   return (
